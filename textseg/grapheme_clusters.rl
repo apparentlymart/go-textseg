@@ -55,16 +55,22 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
             return endPos+1, data[startPos:endPos+1], nil
         }
 
-        ZWJGlue = ZWJ (Glue_After_Zwj | E_Base_GAZ)?;
+        ZWJGlue = ZWJ (Glue_After_Zwj | E_Base_GAZ Extend* E_Modifier?)?;
         AnyExtender = Extend | ZWJGlue | SpacingMark;
         Extension = AnyExtender*;
 
         CRLFSeq = CR LF;
         ControlSeq = Control;
-        # TODO: Hangul syllable sequences (GB6, GB7, GB8)
-        EmojiSeq = (E_Base | E_Base_GAZ) Extend* E_Modifier Extension;
+        HangulSeq = (
+            L+ (LV? V* | LVT) T* |
+            LV V* T* |
+            V+ T* |
+            LVT T* |
+            T+
+        ) Extension;
+        EmojiSeq = (E_Base | E_Base_GAZ) Extend* E_Modifier? Extension;
         ZWJSeq = ZWJGlue Extension;
-        EmojiFlagSeq = Regional_Indicator Regional_Indicator Extension;
+        EmojiFlagSeq = Regional_Indicator Regional_Indicator? Extension;
 
         UTF8Cont = 0x80 .. 0xBF;
         AnyUTF8 = (
@@ -75,13 +81,14 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
         );
 
         # OtherSeq is any character that isn't at the start of one of the extended sequences above, followed by extension
-        OtherSeq = (AnyUTF8 - (CR|LF|Control|E_Base|E_Base_GAZ|ZWJ|Regional_Indicator|Prepend)) Extension;
+        OtherSeq = (AnyUTF8 - (CR|LF|Control|L|LV|V|LVT|T|E_Base|E_Base_GAZ|ZWJ|Regional_Indicator|Prepend)) Extension;
 
         # PrependSeq is prepend followed by any of the other patterns above, except control characters which explicitly break
-        PrependSeq = Prepend+ (EmojiSeq|ZWJSeq|EmojiFlagSeq|OtherSeq);
+        PrependSeq = Prepend+ (HangulSeq|EmojiSeq|ZWJSeq|EmojiFlagSeq|OtherSeq);
 
         CRLFTok = CRLFSeq >start @end;
         ControlTok = ControlSeq >start @end;
+        HangulTok = HangulSeq >start @end;
         EmojiTok = EmojiSeq >start @end;
         ZWJTok = ZWJSeq >start @end;
         EmojiFlagTok = EmojiFlagSeq >start @end;
@@ -91,6 +98,7 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
         main := |*
             CRLFTok => emit;
             ControlTok => emit;
+            HangulTok => emit;
             EmojiTok => emit;
             ZWJTok => emit;
             EmojiFlagTok => emit;
