@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -208,13 +209,19 @@ func addR32ToTable(r *unicode.RangeTable, r32 unicode.Range32) {
 }
 
 func generateTables(prefix string, propertyRanges map[string]*unicode.RangeTable) {
-	for key, rt := range propertyRanges {
+	prNames := make([]string, 0, len(propertyRanges))
+	for k := range propertyRanges {
+		prNames = append(prNames, k)
+	}
+	sort.Strings(prNames)
+	for _, key := range prNames {
+		rt := propertyRanges[key]
 		fmt.Fprintf(output, "var _%s%s = %s\n", prefix, key, generateRangeTable(rt))
 	}
 	fmt.Fprintf(output, "type _%sRuneRange *unicode.RangeTable\n", prefix)
 	fmt.Fprintf(output, "func _%sRuneType(r rune) _%sRuneRange {\n", prefix, prefix)
 	fmt.Fprintf(output, "\tswitch {\n")
-	for key := range propertyRanges {
+	for _, key := range prNames {
 		fmt.Fprintf(output, "\tcase unicode.Is(_%s%s, r):\n\t\treturn _%sRuneRange(_%s%s)\n", prefix, key, prefix, prefix, key)
 	}
 	fmt.Fprintf(output, "\tdefault:\n\t\treturn _%sRuneRange(nil)\n", prefix)
