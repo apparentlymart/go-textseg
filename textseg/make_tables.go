@@ -218,13 +218,23 @@ func generateTables(prefix string, propertyRanges map[string]*unicode.RangeTable
 		rt := propertyRanges[key]
 		fmt.Fprintf(output, "var _%s%s = %s\n", prefix, key, generateRangeTable(rt))
 	}
-	fmt.Fprintf(output, "type _%sRuneRange *unicode.RangeTable\n", prefix)
-	fmt.Fprintf(output, "func _%sRuneType(r rune) _%sRuneRange {\n", prefix, prefix)
+	fmt.Fprintf(output, "type _%sRuneRange unicode.RangeTable\n", prefix)
+
+	fmt.Fprintf(output, "func _%sRuneType(r rune) *_%sRuneRange {\n", prefix, prefix)
 	fmt.Fprintf(output, "\tswitch {\n")
 	for _, key := range prNames {
-		fmt.Fprintf(output, "\tcase unicode.Is(_%s%s, r):\n\t\treturn _%sRuneRange(_%s%s)\n", prefix, key, prefix, prefix, key)
+		fmt.Fprintf(output, "\tcase unicode.Is(_%s%s, r):\n\t\treturn (*_%sRuneRange)(_%s%s)\n", prefix, key, prefix, prefix, key)
 	}
-	fmt.Fprintf(output, "\tdefault:\n\t\treturn _%sRuneRange(nil)\n", prefix)
+	fmt.Fprintf(output, "\tdefault:\n\t\treturn nil\n")
+	fmt.Fprintf(output, "\t}\n")
+	fmt.Fprintf(output, "}\n")
+
+	fmt.Fprintf(output, "func (rng *_%sRuneRange) String() string {\n", prefix)
+	fmt.Fprintf(output, "\tswitch (*unicode.RangeTable)(rng) {\n")
+	for _, key := range prNames {
+		fmt.Fprintf(output, "\tcase _%s%s:\n\t\treturn %q\n", prefix, key, key)
+	}
+	fmt.Fprintf(output, "\tdefault:\n\t\treturn \"Other\"\n")
 	fmt.Fprintf(output, "\t}\n")
 	fmt.Fprintf(output, "}\n")
 }

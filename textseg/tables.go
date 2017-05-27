@@ -1449,46 +1449,86 @@ var _GraphemeZWJ = &unicode.RangeTable{
 	LatinOffset: 0,
 }
 
-type _GraphemeRuneRange *unicode.RangeTable
+type _GraphemeRuneRange unicode.RangeTable
 
-func _GraphemeRuneType(r rune) _GraphemeRuneRange {
+func _GraphemeRuneType(r rune) *_GraphemeRuneRange {
 	switch {
 	case unicode.Is(_GraphemeCR, r):
-		return _GraphemeRuneRange(_GraphemeCR)
+		return (*_GraphemeRuneRange)(_GraphemeCR)
 	case unicode.Is(_GraphemeControl, r):
-		return _GraphemeRuneRange(_GraphemeControl)
+		return (*_GraphemeRuneRange)(_GraphemeControl)
 	case unicode.Is(_GraphemeE_Base, r):
-		return _GraphemeRuneRange(_GraphemeE_Base)
+		return (*_GraphemeRuneRange)(_GraphemeE_Base)
 	case unicode.Is(_GraphemeE_Base_GAZ, r):
-		return _GraphemeRuneRange(_GraphemeE_Base_GAZ)
+		return (*_GraphemeRuneRange)(_GraphemeE_Base_GAZ)
 	case unicode.Is(_GraphemeE_Modifier, r):
-		return _GraphemeRuneRange(_GraphemeE_Modifier)
+		return (*_GraphemeRuneRange)(_GraphemeE_Modifier)
 	case unicode.Is(_GraphemeExtend, r):
-		return _GraphemeRuneRange(_GraphemeExtend)
+		return (*_GraphemeRuneRange)(_GraphemeExtend)
 	case unicode.Is(_GraphemeGlue_After_Zwj, r):
-		return _GraphemeRuneRange(_GraphemeGlue_After_Zwj)
+		return (*_GraphemeRuneRange)(_GraphemeGlue_After_Zwj)
 	case unicode.Is(_GraphemeL, r):
-		return _GraphemeRuneRange(_GraphemeL)
+		return (*_GraphemeRuneRange)(_GraphemeL)
 	case unicode.Is(_GraphemeLF, r):
-		return _GraphemeRuneRange(_GraphemeLF)
+		return (*_GraphemeRuneRange)(_GraphemeLF)
 	case unicode.Is(_GraphemeLV, r):
-		return _GraphemeRuneRange(_GraphemeLV)
+		return (*_GraphemeRuneRange)(_GraphemeLV)
 	case unicode.Is(_GraphemeLVT, r):
-		return _GraphemeRuneRange(_GraphemeLVT)
+		return (*_GraphemeRuneRange)(_GraphemeLVT)
 	case unicode.Is(_GraphemePrepend, r):
-		return _GraphemeRuneRange(_GraphemePrepend)
+		return (*_GraphemeRuneRange)(_GraphemePrepend)
 	case unicode.Is(_GraphemeRegional_Indicator, r):
-		return _GraphemeRuneRange(_GraphemeRegional_Indicator)
+		return (*_GraphemeRuneRange)(_GraphemeRegional_Indicator)
 	case unicode.Is(_GraphemeSpacingMark, r):
-		return _GraphemeRuneRange(_GraphemeSpacingMark)
+		return (*_GraphemeRuneRange)(_GraphemeSpacingMark)
 	case unicode.Is(_GraphemeT, r):
-		return _GraphemeRuneRange(_GraphemeT)
+		return (*_GraphemeRuneRange)(_GraphemeT)
 	case unicode.Is(_GraphemeV, r):
-		return _GraphemeRuneRange(_GraphemeV)
+		return (*_GraphemeRuneRange)(_GraphemeV)
 	case unicode.Is(_GraphemeZWJ, r):
-		return _GraphemeRuneRange(_GraphemeZWJ)
+		return (*_GraphemeRuneRange)(_GraphemeZWJ)
 	default:
-		return _GraphemeRuneRange(nil)
+		return nil
+	}
+}
+func (rng *_GraphemeRuneRange) String() string {
+	switch (*unicode.RangeTable)(rng) {
+	case _GraphemeCR:
+		return "CR"
+	case _GraphemeControl:
+		return "Control"
+	case _GraphemeE_Base:
+		return "E_Base"
+	case _GraphemeE_Base_GAZ:
+		return "E_Base_GAZ"
+	case _GraphemeE_Modifier:
+		return "E_Modifier"
+	case _GraphemeExtend:
+		return "Extend"
+	case _GraphemeGlue_After_Zwj:
+		return "Glue_After_Zwj"
+	case _GraphemeL:
+		return "L"
+	case _GraphemeLF:
+		return "LF"
+	case _GraphemeLV:
+		return "LV"
+	case _GraphemeLVT:
+		return "LVT"
+	case _GraphemePrepend:
+		return "Prepend"
+	case _GraphemeRegional_Indicator:
+		return "Regional_Indicator"
+	case _GraphemeSpacingMark:
+		return "SpacingMark"
+	case _GraphemeT:
+		return "T"
+	case _GraphemeV:
+		return "V"
+	case _GraphemeZWJ:
+		return "ZWJ"
+	default:
+		return "Other"
 	}
 }
 
@@ -2806,54 +2846,102 @@ var _WordZWJ = &unicode.RangeTable{
 	LatinOffset: 0,
 }
 
-type _WordRuneRange *unicode.RangeTable
+type _WordRuneRange unicode.RangeTable
 
-func _WordRuneType(r rune) _WordRuneRange {
+func _WordRuneType(r rune) *_WordRuneRange {
 	switch {
 	case unicode.Is(_WordALetter, r):
-		return _WordRuneRange(_WordALetter)
+		return (*_WordRuneRange)(_WordALetter)
 	case unicode.Is(_WordCR, r):
-		return _WordRuneRange(_WordCR)
+		return (*_WordRuneRange)(_WordCR)
 	case unicode.Is(_WordDouble_Quote, r):
-		return _WordRuneRange(_WordDouble_Quote)
+		return (*_WordRuneRange)(_WordDouble_Quote)
 	case unicode.Is(_WordE_Base, r):
-		return _WordRuneRange(_WordE_Base)
+		return (*_WordRuneRange)(_WordE_Base)
 	case unicode.Is(_WordE_Base_GAZ, r):
-		return _WordRuneRange(_WordE_Base_GAZ)
+		return (*_WordRuneRange)(_WordE_Base_GAZ)
 	case unicode.Is(_WordE_Modifier, r):
-		return _WordRuneRange(_WordE_Modifier)
+		return (*_WordRuneRange)(_WordE_Modifier)
 	case unicode.Is(_WordExtend, r):
-		return _WordRuneRange(_WordExtend)
+		return (*_WordRuneRange)(_WordExtend)
 	case unicode.Is(_WordExtendNumLet, r):
-		return _WordRuneRange(_WordExtendNumLet)
+		return (*_WordRuneRange)(_WordExtendNumLet)
 	case unicode.Is(_WordFormat, r):
-		return _WordRuneRange(_WordFormat)
+		return (*_WordRuneRange)(_WordFormat)
 	case unicode.Is(_WordGlue_After_Zwj, r):
-		return _WordRuneRange(_WordGlue_After_Zwj)
+		return (*_WordRuneRange)(_WordGlue_After_Zwj)
 	case unicode.Is(_WordHebrew_Letter, r):
-		return _WordRuneRange(_WordHebrew_Letter)
+		return (*_WordRuneRange)(_WordHebrew_Letter)
 	case unicode.Is(_WordKatakana, r):
-		return _WordRuneRange(_WordKatakana)
+		return (*_WordRuneRange)(_WordKatakana)
 	case unicode.Is(_WordLF, r):
-		return _WordRuneRange(_WordLF)
+		return (*_WordRuneRange)(_WordLF)
 	case unicode.Is(_WordMidLetter, r):
-		return _WordRuneRange(_WordMidLetter)
+		return (*_WordRuneRange)(_WordMidLetter)
 	case unicode.Is(_WordMidNum, r):
-		return _WordRuneRange(_WordMidNum)
+		return (*_WordRuneRange)(_WordMidNum)
 	case unicode.Is(_WordMidNumLet, r):
-		return _WordRuneRange(_WordMidNumLet)
+		return (*_WordRuneRange)(_WordMidNumLet)
 	case unicode.Is(_WordNewline, r):
-		return _WordRuneRange(_WordNewline)
+		return (*_WordRuneRange)(_WordNewline)
 	case unicode.Is(_WordNumeric, r):
-		return _WordRuneRange(_WordNumeric)
+		return (*_WordRuneRange)(_WordNumeric)
 	case unicode.Is(_WordRegional_Indicator, r):
-		return _WordRuneRange(_WordRegional_Indicator)
+		return (*_WordRuneRange)(_WordRegional_Indicator)
 	case unicode.Is(_WordSingle_Quote, r):
-		return _WordRuneRange(_WordSingle_Quote)
+		return (*_WordRuneRange)(_WordSingle_Quote)
 	case unicode.Is(_WordZWJ, r):
-		return _WordRuneRange(_WordZWJ)
+		return (*_WordRuneRange)(_WordZWJ)
 	default:
-		return _WordRuneRange(nil)
+		return nil
+	}
+}
+func (rng *_WordRuneRange) String() string {
+	switch (*unicode.RangeTable)(rng) {
+	case _WordALetter:
+		return "ALetter"
+	case _WordCR:
+		return "CR"
+	case _WordDouble_Quote:
+		return "Double_Quote"
+	case _WordE_Base:
+		return "E_Base"
+	case _WordE_Base_GAZ:
+		return "E_Base_GAZ"
+	case _WordE_Modifier:
+		return "E_Modifier"
+	case _WordExtend:
+		return "Extend"
+	case _WordExtendNumLet:
+		return "ExtendNumLet"
+	case _WordFormat:
+		return "Format"
+	case _WordGlue_After_Zwj:
+		return "Glue_After_Zwj"
+	case _WordHebrew_Letter:
+		return "Hebrew_Letter"
+	case _WordKatakana:
+		return "Katakana"
+	case _WordLF:
+		return "LF"
+	case _WordMidLetter:
+		return "MidLetter"
+	case _WordMidNum:
+		return "MidNum"
+	case _WordMidNumLet:
+		return "MidNumLet"
+	case _WordNewline:
+		return "Newline"
+	case _WordNumeric:
+		return "Numeric"
+	case _WordRegional_Indicator:
+		return "Regional_Indicator"
+	case _WordSingle_Quote:
+		return "Single_Quote"
+	case _WordZWJ:
+		return "ZWJ"
+	default:
+		return "Other"
 	}
 }
 
@@ -5540,39 +5628,73 @@ var _SentenceUpper = &unicode.RangeTable{
 	LatinOffset: 3,
 }
 
-type _SentenceRuneRange *unicode.RangeTable
+type _SentenceRuneRange unicode.RangeTable
 
-func _SentenceRuneType(r rune) _SentenceRuneRange {
+func _SentenceRuneType(r rune) *_SentenceRuneRange {
 	switch {
 	case unicode.Is(_SentenceATerm, r):
-		return _SentenceRuneRange(_SentenceATerm)
+		return (*_SentenceRuneRange)(_SentenceATerm)
 	case unicode.Is(_SentenceCR, r):
-		return _SentenceRuneRange(_SentenceCR)
+		return (*_SentenceRuneRange)(_SentenceCR)
 	case unicode.Is(_SentenceClose, r):
-		return _SentenceRuneRange(_SentenceClose)
+		return (*_SentenceRuneRange)(_SentenceClose)
 	case unicode.Is(_SentenceExtend, r):
-		return _SentenceRuneRange(_SentenceExtend)
+		return (*_SentenceRuneRange)(_SentenceExtend)
 	case unicode.Is(_SentenceFormat, r):
-		return _SentenceRuneRange(_SentenceFormat)
+		return (*_SentenceRuneRange)(_SentenceFormat)
 	case unicode.Is(_SentenceLF, r):
-		return _SentenceRuneRange(_SentenceLF)
+		return (*_SentenceRuneRange)(_SentenceLF)
 	case unicode.Is(_SentenceLower, r):
-		return _SentenceRuneRange(_SentenceLower)
+		return (*_SentenceRuneRange)(_SentenceLower)
 	case unicode.Is(_SentenceNumeric, r):
-		return _SentenceRuneRange(_SentenceNumeric)
+		return (*_SentenceRuneRange)(_SentenceNumeric)
 	case unicode.Is(_SentenceOLetter, r):
-		return _SentenceRuneRange(_SentenceOLetter)
+		return (*_SentenceRuneRange)(_SentenceOLetter)
 	case unicode.Is(_SentenceSContinue, r):
-		return _SentenceRuneRange(_SentenceSContinue)
+		return (*_SentenceRuneRange)(_SentenceSContinue)
 	case unicode.Is(_SentenceSTerm, r):
-		return _SentenceRuneRange(_SentenceSTerm)
+		return (*_SentenceRuneRange)(_SentenceSTerm)
 	case unicode.Is(_SentenceSep, r):
-		return _SentenceRuneRange(_SentenceSep)
+		return (*_SentenceRuneRange)(_SentenceSep)
 	case unicode.Is(_SentenceSp, r):
-		return _SentenceRuneRange(_SentenceSp)
+		return (*_SentenceRuneRange)(_SentenceSp)
 	case unicode.Is(_SentenceUpper, r):
-		return _SentenceRuneRange(_SentenceUpper)
+		return (*_SentenceRuneRange)(_SentenceUpper)
 	default:
-		return _SentenceRuneRange(nil)
+		return nil
+	}
+}
+func (rng *_SentenceRuneRange) String() string {
+	switch (*unicode.RangeTable)(rng) {
+	case _SentenceATerm:
+		return "ATerm"
+	case _SentenceCR:
+		return "CR"
+	case _SentenceClose:
+		return "Close"
+	case _SentenceExtend:
+		return "Extend"
+	case _SentenceFormat:
+		return "Format"
+	case _SentenceLF:
+		return "LF"
+	case _SentenceLower:
+		return "Lower"
+	case _SentenceNumeric:
+		return "Numeric"
+	case _SentenceOLetter:
+		return "OLetter"
+	case _SentenceSContinue:
+		return "SContinue"
+	case _SentenceSTerm:
+		return "STerm"
+	case _SentenceSep:
+		return "Sep"
+	case _SentenceSp:
+		return "Sp"
+	case _SentenceUpper:
+		return "Upper"
+	default:
+		return "Other"
 	}
 }
