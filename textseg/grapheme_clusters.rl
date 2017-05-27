@@ -58,9 +58,10 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
         ZWJGlue = ZWJ (Glue_After_Zwj | E_Base_GAZ Extend* E_Modifier?)?;
         AnyExtender = Extend | ZWJGlue | SpacingMark;
         Extension = AnyExtender*;
+        ReplacementChar = (0xEF 0xBF 0xBD);
 
         CRLFSeq = CR LF;
-        ControlSeq = Control;
+        ControlSeq = Control | ReplacementChar;
         HangulSeq = (
             L+ (((LV? V+ | LVT) T*)?|LV?) |
             LV V* T* |
@@ -81,7 +82,7 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
         );
 
         # OtherSeq is any character that isn't at the start of one of the extended sequences above, followed by extension
-        OtherSeq = (AnyUTF8 - (CR|LF|Control|L|LV|V|LVT|T|E_Base|E_Base_GAZ|ZWJ|Regional_Indicator|Prepend)) Extension;
+        OtherSeq = (AnyUTF8 - (CR|LF|Control|ReplacementChar|L|LV|V|LVT|T|E_Base|E_Base_GAZ|ZWJ|Regional_Indicator|Prepend)) Extension;
 
         # PrependSeq is prepend followed by any of the other patterns above, except control characters which explicitly break
         PrependSeq = Prepend+ (HangulSeq|EmojiSeq|ZWJSeq|EmojiFlagSeq|OtherSeq)?;
