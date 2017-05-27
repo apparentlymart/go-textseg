@@ -16,3 +16,15 @@ func AllTokens(buf []byte, splitFunc bufio.SplitFunc) ([][]byte, error) {
 	}
 	return ret, scanner.Err()
 }
+
+// TokenCount is a utility that uses a bufio.SplitFunc to count the number of
+// recognized tokens in the given buffer.
+func TokenCount(buf []byte, splitFunc bufio.SplitFunc) (int, error) {
+	scanner := bufio.NewScanner(bytes.NewReader(buf))
+	scanner.Split(splitFunc)
+	var ret int
+	for scanner.Scan() {
+		ret++
+	}
+	return ret, scanner.Err()
+}
