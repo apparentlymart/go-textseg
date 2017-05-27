@@ -84,7 +84,7 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
         OtherSeq = (AnyUTF8 - (CR|LF|Control|L|LV|V|LVT|T|E_Base|E_Base_GAZ|ZWJ|Regional_Indicator|Prepend)) Extension;
 
         # PrependSeq is prepend followed by any of the other patterns above, except control characters which explicitly break
-        PrependSeq = Prepend+ (HangulSeq|EmojiSeq|ZWJSeq|EmojiFlagSeq|OtherSeq);
+        PrependSeq = Prepend+ (HangulSeq|EmojiSeq|ZWJSeq|EmojiFlagSeq|OtherSeq)?;
 
         CRLFTok = CRLFSeq >start @end;
         ControlTok = ControlSeq >start @end;
