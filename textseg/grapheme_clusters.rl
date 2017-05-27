@@ -62,7 +62,7 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
         CRLFSeq = CR LF;
         ControlSeq = Control;
         HangulSeq = (
-            L+ (LV? V* | LVT) T* |
+            L+ (((LV? V+ | LVT) T*)?|LV?) |
             LV V* T* |
             V+ T* |
             LVT T* |
