@@ -1,0 +1,9 @@
+github.com/apparentlymart/go-textseg v1.0.0 h1:rRmlIsPEEhUTIKQb7T++Nz/A5Q6C9IuX2wFoYVvnCs0=
+github.com/apparentlymart/go-textseg/v10 v10.0.0 h1:r+LbXTC1M025le8hVaPcBK3wGP7OetgRNIA45tY3owY=
+github.com/apparentlymart/go-textseg/v10 v10.0.0/go.mod h1:F1tr+MjyFVyKL/bDyFnOPBLkU5Kjo5OJj1ZvVDO+q2w=
+github.com/apparentlymart/go-textseg/v11 v11.0.0 h1:uRr1tmgQxgE5F5vrTjt4kgQ890BeIiZCxTn4imQRfwA=
+github.com/apparentlymart/go-textseg/v11 v11.0.0/go.mod h1:/WgrmNsK+SJws9csFcq/B5VCHemxeHkKCUracylR6e8=
+github.com/apparentlymart/go-textseg/v12 v12.0.0 h1:bNEQyAGak9tojivJNkoqWErVCQbjdL7GzRt3F8NvfJ0=
+github.com/apparentlymart/go-textseg/v12 v12.0.0/go.mod h1:S/4uRK2UtaQttw1GenVJEynmyUenKwP++x/+DdGV/Ec=
+github.com/apparentlymart/go-textseg/v9 v9.0.0 h1:ABuoMoH9718xfw3xMNc9GZBRoIPSLFvl/BcnjjawxEk=
+github.com/apparentlymart/go-textseg/v9 v9.0.0/go.mod h1:dOFTZz5f+7hV9OmjfCrGyYddNS75I+nFirCeYbX+hGY=
