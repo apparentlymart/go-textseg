@@ -1,3 +1,3 @@
-module github.com/apparentlymart/go-textseg/v12
+module github.com/apparentlymart/go-textseg/v13
 
-go 1.14
+go 1.16

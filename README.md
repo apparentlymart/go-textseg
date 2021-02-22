@@ -15,15 +15,15 @@ multiple callers may coexist in the same program, there is a separate
 major release of this module for each supported major Unicode version.
 Therefore you can select the specific version you want by module
 path. For example, to use the algorithm and tables defined by Unicode
-version 12:
+version 13:
 
 ```
-go get github.com/apparentlymart/go-textseg/v12
+go get github.com/apparentlymart/go-textseg/v13
 ```
 
 ```go
 import (
-    "github.com/apparentlymart/go-textseg/v12/textseg"
+    "github.com/apparentlymart/go-textseg/v13/textseg"
 )
 ```
 
