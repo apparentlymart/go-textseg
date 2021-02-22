@@ -5,5 +5,7 @@ github.com/apparentlymart/go-textseg/v11 v11.0.0 h1:uRr1tmgQxgE5F5vrTjt4kgQ890Be
 github.com/apparentlymart/go-textseg/v11 v11.0.0/go.mod h1:/WgrmNsK+SJws9csFcq/B5VCHemxeHkKCUracylR6e8=
 github.com/apparentlymart/go-textseg/v12 v12.0.0 h1:bNEQyAGak9tojivJNkoqWErVCQbjdL7GzRt3F8NvfJ0=
 github.com/apparentlymart/go-textseg/v12 v12.0.0/go.mod h1:S/4uRK2UtaQttw1GenVJEynmyUenKwP++x/+DdGV/Ec=
+github.com/apparentlymart/go-textseg/v13 v13.0.0 h1:Y+KvPE1NYz0xl601PVImeQfFyEy6iT90AvPUL1NNfNw=
+github.com/apparentlymart/go-textseg/v13 v13.0.0/go.mod h1:ZK2fH7c4NqDTLtiYLvIkEghdlcqw7yxLeM89kiTRPUo=
 github.com/apparentlymart/go-textseg/v9 v9.0.0 h1:ABuoMoH9718xfw3xMNc9GZBRoIPSLFvl/BcnjjawxEk=
 github.com/apparentlymart/go-textseg/v9 v9.0.0/go.mod h1:dOFTZz5f+7hV9OmjfCrGyYddNS75I+nFirCeYbX+hGY=
