@@ -7,7 +7,7 @@ package textseg
 import (
 	"bufio"
 
-	realImpl "github.com/apparentlymart/go-textseg/v12/textseg"
+	realImpl "github.com/apparentlymart/go-textseg/v13/textseg"
 )
 
 // ScanUTF8Sequences is a split function for bufio.Scanner that splits on UTF8 sequence boundaries.
