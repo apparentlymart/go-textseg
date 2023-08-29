@@ -9,6 +9,7 @@
 
 // Modified by Martin Atkins to serve the needs of package textseg.
 
+//go:build ignore
 // +build ignore
 
 package main
@@ -29,7 +30,7 @@ import (
 )
 
 var url = flag.String("url",
-	"http://www.unicode.org/Public/12.0.0/ucd/auxiliary/",
+	"http://www.unicode.org/Public/15.0.0/ucd/auxiliary/",
 	"URL of Unicode database directory")
 var verbose = flag.Bool("verbose",
 	false,

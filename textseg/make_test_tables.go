@@ -7,6 +7,7 @@
 //  either express or implied. See the License for the specific language governing permissions
 //  and limitations under the License.
 
+//go:build ignore
 // +build ignore
 
 package main
@@ -26,7 +27,7 @@ import (
 )
 
 var url = flag.String("url",
-	"http://www.unicode.org/Public/13.0.0/ucd/auxiliary/",
+	"http://www.unicode.org/Public/15.0.0/ucd/auxiliary/",
 	"URL of Unicode database directory")
 var verbose = flag.Bool("verbose",
 	false,
