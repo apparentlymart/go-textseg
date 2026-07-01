@@ -1,0 +1,8 @@
+The files in this directory are a subset of files from the Unicode Character
+Database, used here under the Unicode License whose text is provided in
+license.txt.
+
+These files each originate from a matching path under the following prefix:
+    https://www.unicode.org/Public/UNICODE_VERSION/ucd/
+
+For example, UNICODE_VERSION is 16.0.0 for Unicode 16.
