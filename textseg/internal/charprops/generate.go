@@ -32,6 +32,9 @@ func main() {
 	// redundantly storing a bunch of zeroes.
 	fmt.Fprintln(&buf, "var lookupIndices = [...]uint8{")
 	for i := 0; i < len(tree.Indices); i += 8 {
+		if (i % 64) == 0 {
+			fmt.Fprintf(&buf, "  // block 0x%04x\n", i>>6)
+		}
 		items := tree.Indices[i:]
 		items = items[:min(len(items), 8)]
 		fmt.Fprint(&buf, "\t")
@@ -47,6 +50,9 @@ func main() {
 
 	fmt.Fprintln(&buf, "var lookupProps = [...]CharProperties{")
 	for i := 0; i < len(tree.Properties); i += 8 {
+		if (i % 64) == 0 {
+			fmt.Fprintf(&buf, "  // block 0x%04x\n", i>>6)
+		}
 		items := tree.Properties[i:]
 		items = items[:min(len(items), 8)]
 		fmt.Fprint(&buf, "\t")

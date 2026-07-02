@@ -185,7 +185,12 @@ func (t *treeInProgress) Compact() RawPropertyTree {
 	// The first block of indices is the root, but we're going to rebuild
 	// that here as we reassign the block ids during compaction, so we'll
 	// start out with it all zeroed and then fill out in as we work.
-	indices = make([]uint16, blockSize)
+	// We start with an large capacity to ensure that the backing array of
+	// ret.Indices does not need to be extended and therefore reallocated
+	// during our work, since that would cause our subslice "indices" to
+	// be referring to the wrong backing array. (This is hacky, but accepted
+	// because this is just the generation code and so not relevant at runtime.)
+	indices = make([]uint16, blockSize, len(t.indices)*4)
 	dstRootIndices := indices // the first block is the root, which will fill out as we go
 	srcRootIndices := t.indices[:blockSize]
 
@@ -213,6 +218,15 @@ func (t *treeInProgress) Compact() RawPropertyTree {
 			panic("invalid initial index")
 		}
 		t.buildCompactedBlocks(&ret, indexLevels, srcRootIndices, dstRootIndices, i, indexBlockIdxs, propBlockIdxs)
+	}
+
+	// Consistency check: if everything worked correctly then we should not
+	// have zero anywhere in the index table, because block zero of both
+	// tables is reserved for a special purpose.
+	for i, v := range ret.Indices {
+		if v == 0 {
+			panic(fmt.Sprintf("index entry %d is zero, which is invalid", i))
+		}
 	}
 
 	return ret
@@ -253,6 +267,7 @@ func (t *treeInProgress) buildCompactedBlocks(ret *RawPropertyTree, indexLevels 
 			indexBlockIdxs[blockKey] = newBlockIndex
 		}
 		dstIndices[currentIdx] = newBlockIndex
+		return
 	}
 
 	// We're dealing with a leaf index block, whose elements refer to property
