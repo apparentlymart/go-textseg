@@ -51,8 +51,8 @@ func BuildRawPropertyTree(baseDir string) (RawPropertyTree, error) {
 		}
 		propName := entry.FirstField()
 		prop := charprops.LookupGCBProperty(propName)
-		for r := entry.Start; r <= entry.End; r++ {
-			tip.BitwiseOr(r, uint8(prop))
+		for r := entry.Start; r < entry.End; r++ {
+			tip.Set(r, uint8(prop))
 		}
 	}
 	for {
@@ -67,8 +67,8 @@ func BuildRawPropertyTree(baseDir string) (RawPropertyTree, error) {
 		if prop == 0 {
 			continue
 		}
-		for r := entry.Start; r <= entry.End; r++ {
-			tip.BitwiseOr(r, uint8(prop))
+		for r := entry.Start; r < entry.End; r++ {
+			tip.Set(r, uint8(prop))
 		}
 	}
 	for {
@@ -84,7 +84,7 @@ func BuildRawPropertyTree(baseDir string) (RawPropertyTree, error) {
 		}
 		propName := fields[1]
 		prop := charprops.LookupInCBProperty(propName)
-		for r := entry.Start; r <= entry.End; r++ {
+		for r := entry.Start; r < entry.End; r++ {
 			tip.BitwiseOr(r, uint8(prop))
 		}
 	}
@@ -110,6 +110,14 @@ func newTreeInProgress() *treeInProgress {
 		// depending on whether it's a two-byte or longer UTF-8 encoding.
 		indices: make([]uint16, blockSize),
 	}
+}
+
+func (t *treeInProgress) Set(r rune, v uint8) {
+	rawProps := t.ensureProps(r)
+	if v == 4 && *rawProps != 0 {
+		panic(fmt.Sprintf("conflicting properties for U+%04X: already had %02x, but now have %02x", r, *rawProps, v))
+	}
+	*rawProps = v
 }
 
 func (t *treeInProgress) BitwiseOr(r rune, propMask uint8) {

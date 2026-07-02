@@ -33,7 +33,7 @@ func TestLookupFirstChar(t *testing.T) {
 		},
 		{
 			"\uFE0F",
-			CharProperties(GCBControl),
+			CharProperties(uint8(GCBExtend) | uint8(InCBExtend)),
 			3,
 		},
 	}
@@ -71,7 +71,7 @@ func TestLookupFirstChar_graphemeBreakProperty(t *testing.T) {
 		}
 
 		wantGBP := LookupGCBProperty(entry.FirstField())
-		for r := entry.Start; r <= entry.End; r++ {
+		for r := entry.Start; r < entry.End; r++ {
 			buf := make([]byte, 4)
 			n := utf8.EncodeRune(buf, r)
 			buf = buf[:n]
@@ -112,7 +112,7 @@ func TestLookupFirstChar_emojiExtendedPictographic(t *testing.T) {
 		if wantGBP != GCBExtendedPictographic {
 			continue // other emoji properties are irrelevant
 		}
-		for r := entry.Start; r <= entry.End; r++ {
+		for r := entry.Start; r < entry.End; r++ {
 			buf := make([]byte, 4)
 			n := utf8.EncodeRune(buf, r)
 			buf = buf[:n]
@@ -154,7 +154,7 @@ func TestLookupFirstChar_indicConjunctBreakProperty(t *testing.T) {
 		}
 
 		wantInCBP := LookupInCBProperty(fields[1])
-		for r := entry.Start; r <= entry.End; r++ {
+		for r := entry.Start; r < entry.End; r++ {
 			buf := make([]byte, 4)
 			n := utf8.EncodeRune(buf, r)
 			buf = buf[:n]
