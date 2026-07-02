@@ -1,5 +1,7 @@
 package charprops
 
+import "fmt"
+
 // CharProperties is effectively a tuple of both a [GCBProperty] and an
 // [InCBProperty] value, stored compactly as a bitwise-OR of valid values
 // of those two types.
@@ -110,6 +112,43 @@ func (p GCBProperty) IsAnyControl() bool {
 		return true
 	default:
 		return false
+	}
+}
+
+func (p GCBProperty) String() string {
+	switch p {
+	case GCBCR:
+		return "CR"
+	case GCBControl:
+		return "Control"
+	case GCBExtend:
+		return "Extend"
+	case GCBL:
+		return "L"
+	case GCBLF:
+		return "LF"
+	case GCBLV:
+		return "LV"
+	case GCBLVT:
+		return "LVT"
+	case GCBPrepend:
+		return "Prepend"
+	case GCBRegionalIndicator:
+		return "RegionalIndicator"
+	case GCBSpacingMark:
+		return "SpacingMark"
+	case GCBT:
+		return "T"
+	case GCBV:
+		return "V"
+	case GCBZWJ:
+		return "ZWJ"
+	case GCBExtendedPictographic:
+		return "Extended_Pictographic"
+	case GCBNone:
+		return "None"
+	default:
+		return fmt.Sprintf("0x%02x", uint8(p))
 	}
 }
 
