@@ -104,6 +104,15 @@ func LookupEmojiProperty(name string) GCBProperty {
 	}
 }
 
+func (p GCBProperty) IsAnyControl() bool {
+	switch p {
+	case GCBLF, GCBCR, GCBControl:
+		return true
+	default:
+		return false
+	}
+}
+
 // InCBProperty is an enumeration of Indic_Conjunct_Break property values,
 // as defined in DerivedCoreProperties.txt based on
 // [the rules in UAX#44].
