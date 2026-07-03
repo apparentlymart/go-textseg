@@ -12,7 +12,7 @@ import (
 // Deprecated: This will be removed in a future release.
 var Error = errors.New("invalid UTF8 text")
 
-// ScanGraphemeClusters is a split function for bufio.Scanner that splits
+// ScanGraphemeClusters is a split function for [bufio.Scanner] that splits
 // on grapheme cluster boundaries.
 func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
 	if len(data) == 0 {
