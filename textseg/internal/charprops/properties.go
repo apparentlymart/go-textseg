@@ -72,7 +72,7 @@ func LookupGCBProperty(name string) GCBProperty {
 		return GCBLVT
 	case "Prepend":
 		return GCBPrepend
-	case "RegionalIndicator":
+	case "Regional_Indicator":
 		return GCBRegionalIndicator
 	case "SpacingMark":
 		return GCBSpacingMark
@@ -134,7 +134,7 @@ func (p GCBProperty) String() string {
 	case GCBPrepend:
 		return "Prepend"
 	case GCBRegionalIndicator:
-		return "RegionalIndicator"
+		return "Regional_Indicator"
 	case GCBSpacingMark:
 		return "SpacingMark"
 	case GCBT:

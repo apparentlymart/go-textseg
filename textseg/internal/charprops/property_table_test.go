@@ -36,6 +36,11 @@ func TestLookupFirstChar(t *testing.T) {
 			CharProperties(uint8(GCBExtend) | uint8(InCBExtend)),
 			3,
 		},
+		{
+			"\U0001F1E6\U0001F1E6",
+			CharProperties(GCBRegionalIndicator),
+			4,
+		},
 	}
 
 	for _, test := range tests {
