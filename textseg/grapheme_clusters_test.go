@@ -32,7 +32,7 @@ func TestScanGraphemeClusters(t *testing.T) {
 		}
 
 		t.Run(fmt.Sprintf("%x", test.Input), func(t *testing.T) {
-			got, err := AllTokens(test.Input, ScanGraphemeClusters)
+			got, err := allTokens(test.Input, ScanGraphemeClusters)
 
 			if err != nil {
 				t.Fatalf("unexpected error: %s", err)

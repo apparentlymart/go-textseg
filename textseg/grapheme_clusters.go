@@ -1,16 +1,9 @@
 package textseg
 
 import (
-	"errors"
-
 	"github.com/apparentlymart/go-textseg/v17/textseg/internal/charprops"
 	"github.com/apparentlymart/go-textseg/v17/textseg/internal/machine"
 )
-
-// Error is a legacy symbol that is no longer used.
-//
-// Deprecated: This will be removed in a future release.
-var Error = errors.New("invalid UTF8 text")
 
 // ScanGraphemeClusters is a split function for [bufio.Scanner] that splits
 // on grapheme cluster boundaries.
