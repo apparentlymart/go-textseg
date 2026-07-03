@@ -1,11 +1,15 @@
 package charprops
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // CharProperties is effectively a tuple of both a [GCBProperty] and an
 // [InCBProperty] value, stored compactly as a bitwise-OR of valid values
 // of those two types.
 type CharProperties uint8
+
+const Error = CharProperties(uint8(GCBError) | uint8(InCBError))
 
 func MakeCharProperties(gcpProp GCBProperty, emojiProp GCBProperty, inCBProp InCBProperty) CharProperties {
 	return CharProperties(uint8(gcpProp) | uint8(emojiProp) | uint8(inCBProp))
@@ -17,6 +21,25 @@ func (cp CharProperties) GCBProperty() GCBProperty {
 
 func (cp CharProperties) InCBProperty() InCBProperty {
 	return InCBProperty(cp & 0xf0)
+}
+
+func (cp CharProperties) String() string {
+	if cp == 0 {
+		return "None"
+	}
+	if cp == Error {
+		return "Error"
+	}
+	gcbP := cp.GCBProperty()
+	inCBP := cp.InCBProperty()
+	switch {
+	case inCBP == InCBNone:
+		return gcbP.String()
+	case gcbP == GCBNone:
+		return "InCB=" + inCBP.String()
+	default:
+		return fmt.Sprintf("%s|InCB=%s", gcbP, inCBP)
+	}
 }
 
 // GCBProperty is an enumeration of Grapheme_Cluster_Break property values,
@@ -50,6 +73,11 @@ const (
 	GCBT                    GCBProperty = 0x0c
 	GCBV                    GCBProperty = 0x0d
 	GCBZWJ                  GCBProperty = 0x0e
+
+	// GCBError is the GCB portion of [Error], which is not a real property
+	// value but instead represents that the grapheme cluster segmentation
+	// function encountered an invalid UTF-8 sequence.
+	GCBError GCBProperty = 0x0f
 )
 
 // LookupGCBProperty returns the [GCPProperty] value corresponding to the
@@ -147,6 +175,8 @@ func (p GCBProperty) String() string {
 		return "Extended_Pictographic"
 	case GCBNone:
 		return "None"
+	case GCBError:
+		return "Error"
 	default:
 		return fmt.Sprintf("0x%02x", uint8(p))
 	}
@@ -172,6 +202,11 @@ const (
 	InCBConsonant InCBProperty = 0x10
 	InCBExtend    InCBProperty = 0x20
 	InCBLinker    InCBProperty = 0x30
+
+	// GCBError is the GCB portion of [Error], which is not a real property
+	// value but instead represents that the grapheme cluster segmentation
+	// function encountered an invalid UTF-8 sequence.
+	InCBError InCBProperty = 0xf0
 )
 
 // LookupGCBProperty returns the [InCBProperty] value corresponding to the
@@ -186,5 +221,18 @@ func LookupInCBProperty(name string) InCBProperty {
 		return InCBLinker
 	default:
 		return InCBNone
+	}
+}
+
+func (p InCBProperty) String() string {
+	switch p {
+	case InCBConsonant:
+		return "Consonant"
+	case InCBExtend:
+		return "Extend"
+	case InCBLinker:
+		return "Linker"
+	default:
+		return fmt.Sprintf("0x%02x", uint8(p))
 	}
 }
