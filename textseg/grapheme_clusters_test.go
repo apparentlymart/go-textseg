@@ -4,33 +4,48 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
 	"unicode/utf8"
 
 	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops"
+	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops/ucdparse"
 )
 
-func TestScanGraphemeClusters(t *testing.T) {
-	tests := unicodeGraphemeTests
+const graphemeBreakTestDataFile = "internal/charprops/ucd/auxiliary/GraphemeBreakTest.txt"
 
-	for i, test := range tests {
-		t.Run(fmt.Sprintf("%03d-%x", i, test.input), func(t *testing.T) {
-			got, err := AllTokens(test.input, ScanGraphemeClusters)
+func TestScanGraphemeClusters(t *testing.T) {
+	testDataFile, err := os.Open(graphemeBreakTestDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	testDataScanner := ucdparse.NewTestDataScanner(testDataFile)
+
+	for {
+		test, err := testDataScanner.NextEntry()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			t.Fatal(err)
+		}
+
+		t.Run(fmt.Sprintf("%x", test.Input), func(t *testing.T) {
+			got, err := AllTokens(test.Input, ScanGraphemeClusters)
 
 			if err != nil {
 				t.Fatalf("unexpected error: %s", err)
 			}
 
-			if !reflect.DeepEqual(got, test.output) {
+			if !reflect.DeepEqual(got, test.WantSegments) {
 				// Also get the rune values resulting from decoding utf8,
 				// since they are generally easier to look up to figure out
 				// what's failing.
-				runes := make([]string, 0, len(test.input))
-				seqs := make([][]byte, 0, len(test.input))
-				categories := make([]string, 0, len(test.input))
-				buf := test.input
+				runes := make([]string, 0, len(test.Input))
+				seqs := make([][]byte, 0, len(test.Input))
+				categories := make([]string, 0, len(test.Input))
+				buf := test.Input
 				for len(buf) > 0 {
 					r, size := utf8.DecodeRune(buf)
 					runes = append(runes, fmt.Sprintf("0x%04x", r))
@@ -42,12 +57,12 @@ func TestScanGraphemeClusters(t *testing.T) {
 
 				t.Errorf(
 					"wrong result\ninput: %s\nutf8s: %s\nrunes: %s\ncats:  %s\ngot:   %s\nwant:  %s",
-					formatBytes(test.input),
+					formatBytes(test.Input),
 					formatByteRanges(seqs),
 					strings.Join(runes, " "),
 					strings.Join(categories, " "),
 					formatByteRanges(got),
-					formatByteRanges(test.output),
+					formatByteRanges(test.WantSegments),
 				)
 			}
 		})
@@ -58,11 +73,22 @@ func TestScanGraphemeClusters(t *testing.T) {
 // that makes sure the same logic works when data arrives in smaller chunks,
 // such as streaming over a socket.
 func TestScanGraphemeClusters_partial(t *testing.T) {
-	tests := unicodeGraphemeTests
+	testDataFile, err := os.Open(graphemeBreakTestDataFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	testDataScanner := ucdparse.NewTestDataScanner(testDataFile)
 
-	for i, test := range tests {
-		t.Run(fmt.Sprintf("%03d-%x", i, test.input), func(t *testing.T) {
-			r := &dripReader{test.input}
+	for {
+		test, err := testDataScanner.NextEntry()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			t.Fatal(err)
+		}
+
+		t.Run(fmt.Sprintf("%x", test.Input), func(t *testing.T) {
+			r := &dripReader{test.Input}
 			sc := bufio.NewScanner(r)
 			sc.Split(ScanGraphemeClusters)
 			var got [][]byte
@@ -75,14 +101,14 @@ func TestScanGraphemeClusters_partial(t *testing.T) {
 				t.Fatalf("unexpected error: %s", err)
 			}
 
-			if !reflect.DeepEqual(got, test.output) {
+			if !reflect.DeepEqual(got, test.WantSegments) {
 				// Also get the rune values resulting from decoding utf8,
 				// since they are generally easier to look up to figure out
 				// what's failing.
-				runes := make([]string, 0, len(test.input))
-				seqs := make([][]byte, 0, len(test.input))
-				categories := make([]string, 0, len(test.input))
-				buf := test.input
+				runes := make([]string, 0, len(test.Input))
+				seqs := make([][]byte, 0, len(test.Input))
+				categories := make([]string, 0, len(test.Input))
+				buf := test.Input
 				for len(buf) > 0 {
 					r, size := utf8.DecodeRune(buf)
 					runes = append(runes, fmt.Sprintf("0x%04x", r))
@@ -94,12 +120,12 @@ func TestScanGraphemeClusters_partial(t *testing.T) {
 
 				t.Errorf(
 					"wrong result\ninput: %s\nutf8s: %s\nrunes: %s\ncats:  %s\ngot:   %s\nwant:  %s",
-					formatBytes(test.input),
+					formatBytes(test.Input),
 					formatByteRanges(seqs),
 					strings.Join(runes, " "),
 					strings.Join(categories, " "),
 					formatByteRanges(got),
-					formatByteRanges(test.output),
+					formatByteRanges(test.WantSegments),
 				)
 			}
 		})

@@ -60,3 +60,12 @@ The most important function in each `textseg` package is
 signature of `bufio.Scanner` in the Go standard library. Each
 time the `Scan` function is called, the function will produce one
 full grapheme cluster.
+
+## License
+
+The library code implementing the text segmentation algorithms is released
+under the MIT license as described in [LICENSE](./LICENSE).
+
+This library also includes data derived from parts of the Unicode Character
+Database, which is used here under the terms of
+[Unicode License V3](./textseg/internal/charprops/ucd/license.txt).
