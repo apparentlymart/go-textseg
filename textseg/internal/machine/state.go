@@ -53,6 +53,14 @@ const (
 	StateGB9cLinker
 )
 
+// Begin initializes the state machine by providing the properties for the
+// first character. Call [State.Transition] on the resulting state once
+// the second character is known, passing the same properties as "first" in
+// its "prev" argument.
+func Begin(first charprops.CharProperties) State {
+	return StateBase.nextState(first)
+}
+
 // Given the previous category and the next category, Transition returns whether
 // there is a grapheme cluster boundary between two characters of those
 // categories in the receiving state, and which state should be used for the

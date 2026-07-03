@@ -32,7 +32,7 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
 	}
 	remain := data[advance:]
 
-	state := machine.StateBase
+	state := machine.Begin(properties)
 	prev := properties
 	for {
 		if len(remain) == 0 {
