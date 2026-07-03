@@ -10,7 +10,7 @@ import (
 	"math"
 	"os"
 
-	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops/gentable"
+	"github.com/apparentlymart/go-textseg/v17/textseg/internal/charprops/gentable"
 )
 
 func main() {

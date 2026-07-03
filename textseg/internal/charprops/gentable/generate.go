@@ -8,8 +8,8 @@ import (
 	"slices"
 	"unicode/utf8"
 
-	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops"
-	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops/ucdparse"
+	"github.com/apparentlymart/go-textseg/v17/textseg/internal/charprops"
+	"github.com/apparentlymart/go-textseg/v17/textseg/internal/charprops/ucdparse"
 )
 
 const blockShift = 6

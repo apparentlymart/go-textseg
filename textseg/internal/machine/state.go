@@ -1,7 +1,7 @@
 package machine
 
 import (
-	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops"
+	"github.com/apparentlymart/go-textseg/v17/textseg/internal/charprops"
 )
 
 // The state machine implemented here is a Go port of a Rust implementation

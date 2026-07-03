@@ -3,8 +3,8 @@ package textseg
 import (
 	"errors"
 
-	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops"
-	"github.com/apparentlymart/go-textseg/v16/textseg/internal/machine"
+	"github.com/apparentlymart/go-textseg/v17/textseg/internal/charprops"
+	"github.com/apparentlymart/go-textseg/v17/textseg/internal/machine"
 )
 
 // Error is a legacy symbol that is no longer used.
