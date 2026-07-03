@@ -41,6 +41,21 @@ func TestLookupFirstChar(t *testing.T) {
 			CharProperties(GCBRegionalIndicator),
 			4,
 		},
+		{
+			"\xc0", // the first byte of a two-byte sequence
+			CharProperties(0),
+			0,
+		},
+		{
+			"\xc0\x00", // the first byte of a two-byte sequence, followed by a non-continuation byte
+			Error,
+			1,
+		},
+		{
+			"\x80\x00", // begins with a continuation byte
+			Error,
+			1,
+		},
 	}
 
 	for _, test := range tests {
