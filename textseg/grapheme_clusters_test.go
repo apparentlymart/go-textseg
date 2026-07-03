@@ -8,6 +8,8 @@ import (
 	"strings"
 	"testing"
 	"unicode/utf8"
+
+	"github.com/apparentlymart/go-textseg/v16/textseg/internal/charprops"
 )
 
 func TestScanGraphemeClusters(t *testing.T) {
@@ -33,7 +35,8 @@ func TestScanGraphemeClusters(t *testing.T) {
 					r, size := utf8.DecodeRune(buf)
 					runes = append(runes, fmt.Sprintf("0x%04x", r))
 					seqs = append(seqs, buf[:size])
-					categories = append(categories, _GraphemeRuneType(r).String())
+					props, _ := charprops.LookupFirstChar(buf)
+					categories = append(categories, props.String())
 					buf = buf[size:]
 				}
 
@@ -84,7 +87,8 @@ func TestScanGraphemeClusters_partial(t *testing.T) {
 					r, size := utf8.DecodeRune(buf)
 					runes = append(runes, fmt.Sprintf("0x%04x", r))
 					seqs = append(seqs, buf[:size])
-					categories = append(categories, _GraphemeRuneType(r).String())
+					props, _ := charprops.LookupFirstChar(buf)
+					categories = append(categories, props.String())
 					buf = buf[size:]
 				}
 
