@@ -1,0 +1,8 @@
+
+# Blah blah
+0000..007F; Basic Latin # Blah blah
+0080..00FF; Latin-1 Supplement
+
+2764; Heart
+
+1D100..1D1FF; Music ; Astral
