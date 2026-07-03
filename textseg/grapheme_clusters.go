@@ -14,23 +14,26 @@ var Error = errors.New("invalid UTF8 text")
 
 // ScanGraphemeClusters is a split function for [bufio.Scanner] that splits
 // on grapheme cluster boundaries.
+//
+// Note that while this function does some minimal UTF-8 validation as part
+// of its work, it never actually returns an error and instead just reports
+// invalid bytes as individual grapheme clusters. Also in particular it does
+// not currently check for overlong encodings or out-of-range Unicode scalar
+// values, and so callers should perform their own validation if needed. The
+// handling of overlong and out-of-range input may change in future releases.
 func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
 	if len(data) == 0 {
 		return 0, nil, nil
 	}
 
-	advance, token, err := ScanUTF8Sequences(data, atEOF)
-	if err != nil || (advance == 0 && len(token) == 0) {
-		return advance, token, err
+	properties, count := charprops.LookupFirstChar(data)
+	if properties == charprops.Error {
+		return 1, data[:1], nil
 	}
-
-	properties, count := charprops.LookupFirstChar(token)
-	if count != advance {
-		// An invalid UTF-8 sequence then, so we'll just report the
-		// next byte standalone.
-		return 1, data[0:1], nil
+	if count == 0 {
+		return 0, nil, nil
 	}
-	remain := data[advance:]
+	remain := data[count:]
 
 	state := machine.Begin(properties)
 	prev := properties
@@ -47,24 +50,17 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
 			return 0, nil, nil
 		}
 
-		advance, token, err := ScanUTF8Sequences(remain, atEOF)
-		if err != nil {
-			// If the next sequence is incomplete or invalid then we'll
-			// just return here
-			return count, data[:count], err
-		} else if advance == 0 && len(token) == 0 {
+		next, moreCount := charprops.LookupFirstChar(remain)
+		if next == charprops.Error {
+			// If the next sequence is invalid then we'll just return here
+			// and let the next call deal with that.
+			return count, data[:count], nil
+		}
+		if moreCount == 0 {
 			// More bytes required to complete the next UTF-8 sequence.
 			return 0, nil, nil
 		}
-
-		next, moreCount := charprops.LookupFirstChar(token)
-		if moreCount != advance {
-			// An invalid UTF-8 sequence then, so we'll just report what
-			// we found so far and let the next round deal with the invalid
-			// prefix.
-			return count, data[:count], nil
-		}
-		remain = remain[advance:]
+		remain = remain[moreCount:]
 
 		split, nextState := state.Transition(prev, next)
 		if split {
