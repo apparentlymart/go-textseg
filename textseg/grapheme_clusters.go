@@ -24,6 +24,11 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
 		return 1, data[:1], nil
 	}
 	if count == 0 {
+		if len(data) > count && atEOF {
+			// If we're already at EOF then this is invalid input, which
+			// we treat as each invalid byte being a separate grapheme cluster.
+			return 1, data[:1], nil
+		}
 		return 0, nil, nil
 	}
 	remain := data[count:]
@@ -51,6 +56,12 @@ func ScanGraphemeClusters(data []byte, atEOF bool) (int, []byte, error) {
 		}
 		if moreCount == 0 {
 			// More bytes required to complete the next UTF-8 sequence.
+			if len(remain) != 0 && atEOF {
+				// If we're already at EOF then the next UTF-8 sequence is
+				// invalid, so we'll report what we already accumulated and
+				// then let a subsequent call deal with the invalid byte.
+				return count, data[:count], nil
+			}
 			return 0, nil, nil
 		}
 		remain = remain[moreCount:]
